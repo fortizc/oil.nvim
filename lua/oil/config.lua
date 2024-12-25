@@ -30,6 +30,11 @@ local default_config = {
   delete_to_trash = false,
   -- Skip the confirmation popup for simple operations (:help oil.skip_confirm_for_simple_edits)
   skip_confirm_for_simple_edits = false,
+
+  -- Set the default mode to create files
+  new_file_mode = 644,
+  -- Set the default mode to create folders
+  new_folder_mode = 755,
   -- Selecting a new/moved/renamed file or directory will prompt you to save changes first
   -- (:help prompt_save_on_select_new_entry)
   prompt_save_on_select_new_entry = true,
@@ -105,10 +110,6 @@ local default_config = {
       return nil
     end,
   },
-  -- Set the default mode to create files
-  new_file_mode = 644,
-  -- Set the default mode to create folders
-  new_folder_mode = 755,
   -- Extra arguments to pass to SCP when moving/copying files over SSH
   extra_scp_args = {},
   -- EXPERIMENTAL support for performing file operations with git
@@ -417,8 +418,9 @@ M.setup = function(opts)
     new_conf.confirmation = vim.tbl_deep_extend("keep", opts.preview, default_config.confirmation)
   end
 
-  M.new_file_mode = tonumber(tostring(opts.new_file_mode), 10)
-  M.new_folder_mode = tonumber(tostring(opts.new_folder_mode), 10)
+  M.new_file_mode = tonumber(tostring(opts.new_file_mode), 8)
+  M.new_folder_mode = tonumber(tostring(opts.new_folder_mode), 8)
+
   -- Backwards compatibility. We renamed the 'preview' config to 'preview_win'
   if opts.preview and opts.preview.update_on_cursor_moved ~= nil then
     new_conf.preview_win.update_on_cursor_moved = opts.preview.update_on_cursor_moved
