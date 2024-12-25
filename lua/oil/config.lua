@@ -107,6 +107,8 @@ local default_config = {
   },
   -- Set the default mode to create files
   new_file_mode = 644,
+  -- Set the default mode to create folders
+  new_folder_mode = 755,
   -- Extra arguments to pass to SCP when moving/copying files over SSH
   extra_scp_args = {},
   -- EXPERIMENTAL support for performing file operations with git
@@ -235,6 +237,7 @@ default_config.view_options.highlight_filename = nil
 ---@field use_default_keymaps boolean
 ---@field view_options oil.ViewOptions
 ---@field new_file_mode integer
+---@field new_folder_mode integer
 ---@field extra_scp_args string[]
 ---@field git oil.GitOptions
 ---@field float oil.FloatWindowConfig
@@ -264,6 +267,7 @@ local M = {}
 ---@field use_default_keymaps? boolean Set to false to disable all of the above keymaps
 ---@field view_options? oil.SetupViewOptions Configure which files are shown and how they are shown.
 ---@field new_file_mode? integer Set the default mode to create files
+---@field new_folder_mode? integer Set the default mode to create folders
 ---@field extra_scp_args? string[] Extra arguments to pass to SCP when moving/copying files over SSH
 ---@field git? oil.SetupGitOptions EXPERIMENTAL support for performing file operations with git
 ---@field float? oil.SetupFloatWindowConfig Configuration for the floating window in oil.open_float
@@ -413,7 +417,8 @@ M.setup = function(opts)
     new_conf.confirmation = vim.tbl_deep_extend("keep", opts.preview, default_config.confirmation)
   end
 
-  M.new_file_mode = tonumber(tostring(opts.new_file_mode), 8)
+  M.new_file_mode = tonumber(tostring(opts.new_file_mode), 10)
+  M.new_folder_mode = tonumber(tostring(opts.new_folder_mode), 10)
   -- Backwards compatibility. We renamed the 'preview' config to 'preview_win'
   if opts.preview and opts.preview.update_on_cursor_moved ~= nil then
     new_conf.preview_win.update_on_cursor_moved = opts.preview.update_on_cursor_moved

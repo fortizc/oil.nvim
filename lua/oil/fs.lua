@@ -147,7 +147,6 @@ end
 ---@param dir string
 ---@param mode? integer
 M.mkdirp = function(dir, mode)
-  mode = mode or 493
   local mod = ""
   local path = dir
   while vim.fn.isdirectory(path) == 0 do

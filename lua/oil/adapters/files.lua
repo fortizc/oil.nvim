@@ -530,7 +530,7 @@ M.perform_action = function(action, cb)
     end
 
     if action.entry_type == "directory" then
-      uv.fs_mkdir(path, 493, function(err)
+      uv.fs_mkdir(path, config.new_folder_mode, function(err)
         -- Ignore if the directory already exists
         if not err or err:match("^EEXIST:") then
           cb()
